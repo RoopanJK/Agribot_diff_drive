@@ -1,0 +1,360 @@
+<?xml version="1.0"?>
+
+<robot name="agribot" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:include filename="$(find agribot_description)/urdf/agribot.gazebo" />
+
+  <xacro:macro name="box_inertia" params="b_mass b_x b_y b_z">
+    <mass value="${b_mass}" />
+    <inertia ixx="${b_mass*(b_y*b_y+b_z*b_z)/12}" ixy="0" ixz="0" iyy="${b_mass*(b_x*b_x+b_z*b_z)/12}" iyz="0" izz="${b_mass*(b_x*b_x+b_y*b_y)/12}" />
+  </xacro:macro>
+
+
+  <xacro:macro name="cylinder_inertia" params="c_mass r l">
+    <mass value="${c_mass}" />
+    <inertia ixx="${c_mass*(3*r*r+l*l)/12}" ixy="0" ixz="0" iyy="${c_mass*(3*r*r+l*l)/12}" iyz="0" izz="${c_mass*(r*r)/2}" />
+  </xacro:macro>
+
+  <link name="base_footprint" />
+
+  <link name="base_link">
+    <inertial>
+      <origin xyz="-0.80 0 0" rpy="0 0 0" />
+      <xacro:box_inertia b_mass="20" b_x="0.885" b_y="0.36" b_z="0.05" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.885 0.36 0.05" />
+      </geometry>
+      <material name="base_material">
+        <color rgba="1 0 0 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.885 0.36 0.05" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="left_wheel">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <xacro:cylinder_inertia c_mass="2" r="0.08" l="0.06" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <cylinder length="0.06" radius="0.08" />
+      </geometry>
+      <material name="l_wheel">
+        <color rgba="0 0 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <cylinder length="0.06" radius="0.08" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="right_wheel">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <xacro:cylinder_inertia c_mass="2" r="0.08" l="0.06" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <cylinder length="0.06" radius="0.08" />
+      </geometry>
+      <material name="r_wheel">
+        <color rgba="0 0 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <cylinder length="0.06" radius="0.08" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="laser">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <inertial>
+      <mass value="0.09" />
+      <inertia ixx="4.275e-05" ixy="0" ixz="0" iyy="4.275e-05" iyz="0" izz="5.5125e-05" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <cylinder length="0.040" radius="0.030" />
+      </geometry>
+      <material name="lidar_mat">
+        <color rgba="0 1 0 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <cylinder length="0.040" radius="0.030" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="laser_support_v">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <xacro:box_inertia b_mass="17" b_x="0.72" b_y="0.40" b_z="0.28" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.01 0.05 0.125" />
+      </geometry>
+      <material name="laser_support_material">
+        <color rgba="1 0.7 0.5 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.01 0.05 0.125" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="battery">
+    <!-- <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <xacro:box_inertia b_mass="10" b_x="0.15" b_y="0.30" b_z="0.10" />
+    </inertial> -->
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.15 0.30 0.10" />
+      </geometry>
+      <material name="battery_material">
+        <color rgba="0 0 0 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.01 0.05 0" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="laser_support_h">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <xacro:box_inertia b_mass="17" b_x="0.72" b_y="0.40" b_z="0.28" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.06 0.05 0.01" />
+      </geometry>
+      <material name="laser_support_material">
+        <color rgba="1 0.7 0.5 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.06 0.05 0.01" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="castor_f_l">
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://agribot_description/meshes/castor_wheel.STL" scale="0.0012 0.0012 0.0012" />
+      </geometry>
+
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://agribot_description/meshes/castor_wheel.STL" scale="0.0012 0.0012 0.0012" />
+      </geometry>
+    </collision>
+
+    <inertial>
+      <mass value="0.30" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <inertia ixx="0.0144" ixy="0" ixz="0" iyy="0.0144" iyz="0" izz="0.0144" />
+    </inertial>
+
+  </link>
+
+  <link name="castor_f_r">
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://agribot_description/meshes/castor_wheel.STL" scale="0.0012 0.0012 0.0012" />
+      </geometry>
+
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://agribot_description/meshes/castor_wheel.STL" scale="0.0012 0.0012 0.0012" />
+      </geometry>
+    </collision>
+
+    <inertial>
+      <mass value="0.30" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <inertia ixx="0.0144" ixy="0" ixz="0" iyy="0.0144" iyz="0" izz="0.0144" />
+    </inertial>
+
+  </link>
+
+  <link name="castor_b_l">
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://agribot_description/meshes/castor_wheel.STL" scale="0.0012 0.0012 0.0012" />
+      </geometry>
+
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://agribot_description/meshes/castor_wheel.STL" scale="0.0012 0.0012 0.0012" />
+      </geometry>
+    </collision>
+
+    <inertial>
+      <mass value="0.30" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <inertia ixx="0.0144" ixy="0" ixz="0" iyy="0.0144" iyz="0" izz="0.0144" />
+    </inertial>
+
+  </link>
+
+  <link name="castor_b_r">
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://agribot_description/meshes/castor_wheel.STL" scale="0.0012 0.0012 0.0012" />
+      </geometry>
+
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://agribot_description/meshes/castor_wheel.STL" scale="0.0012 0.0012 0.0012" />
+      </geometry>
+    </collision>
+
+    <inertial>
+      <mass value="0.30" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <inertia ixx="0.0144" ixy="0" ixz="0" iyy="0.0144" iyz="0" izz="0.0144" />
+    </inertial>
+
+  </link>
+
+  <joint name="footprint_link_joint" type="fixed">
+    <parent link="base_footprint" />
+    <child link="base_link" />
+    <origin xyz="0 0 0.16" rpy="0 0 0" />
+  </joint>
+
+  <joint name="baselink_leftwheel" type="continuous">
+    <axis xyz="0 0 1" />
+    <parent link="base_link" />
+    <child link="left_wheel" />
+    <origin xyz="0 0.21 -0.08" rpy="1.57 0 3.14 " />
+    <limit effort="300" velocity="100"/>
+  </joint>
+
+  <joint name="baselink_rightwheel" type="continuous">
+    <axis xyz="0 0 1" />
+    <parent link="base_link" />
+    <child link="right_wheel" />
+    <origin xyz="0 -0.21 -0.08" rpy="1.57 0 3.14" />
+    <limit effort="300" velocity="100"/>
+  </joint>
+
+  <joint name="baselink_lidar" type="fixed">
+    <parent link="base_link" />
+    <child link="laser" />
+    <origin xyz="0.46765 0 0.115" rpy="3.14 3.14 0" />
+  </joint>
+
+  <joint name="baselink_lidar_support_v" type="fixed">
+    <parent link="base_link" />
+    <child link="laser_support_v" />
+    <origin xyz="0.4375 0 0.0375" rpy="3.14 3.14 0" />
+  </joint>
+
+  <joint name="baselink_lidar_support_h" type="fixed">
+    <parent link="base_link" />
+    <child link="laser_support_h" />
+    <origin xyz="0.4675 0 0.090 " rpy="3.14 3.14 0" />
+  </joint>
+
+  <joint name="battery_1_joint" type="fixed">
+    <parent link="base_link" />
+    <child link="battery" />
+    <origin xyz="-0.325 0 0.075 " rpy="3.14 3.14 0" />
+  </joint>
+
+  <joint name="Castor_f_l_joint" type="continuous">
+    <origin xyz="0.35 0.12 -0.088035" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="castor_f_l" />
+    <limit effort="150" velocity="100"/>
+    <dynamics damping="0.005" friction="0.1"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <joint name="Castor_f_r_joint" type="continuous">
+    <origin xyz="0.35 -0.12 -0.088035" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="castor_f_r" />
+    <limit effort="150" velocity="100"/>
+    <dynamics damping="0.005" friction="0.1"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <joint name="Castor_b_l_joint" type="continuous">
+    <origin xyz="-0.35 0.12 -0.088035" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="castor_b_l" />
+    <limit effort="150" velocity="100"/>
+    <dynamics damping="0.005" friction="0.1"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+
+  <joint name="Castor_b_r_joint" type="continuous">
+    <origin xyz="-0.35 -0.12 -0.088035" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="castor_b_r" />
+    <limit effort="150" velocity="100"/>
+    <dynamics damping="0.005" friction="0.1"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+</robot>

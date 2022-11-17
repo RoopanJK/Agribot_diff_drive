@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+
+        <arg name="world_name" value="$(find agribot_simulation)/worlds/room.world" />
+
+        <arg name="paused" value="false" />
+        <arg name="use_sim_time" value="true" />
+        <arg name="gui" value="true" />
+        <arg name="recording" value="false" />
+        <arg name="debug" value="false" />
+
+    </include>
+
+    <!-- Load the URDF into the ROS Parameter Server -->
+    <param name="robot_description" command="$(find xacro)/xacro '$(find agribot_description)/urdf/agribot.xacro'" />
+
+    <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
+    <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-x 0.2 -y 0.2 -z 0 -Y 1.57 -urdf -model agribot -param robot_description" />
+
+    <!-- Publishes joint positions - Joint state publisher -->
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+
+    <!-- Uses URDF and Joint positions to compute transforms of robot -->
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+    <include file="$(find agribot_simulation)/launch/agribot_w_amcl.launch"/>
+
+    <include file="$(find agribot_simulation)/launch/move_base.launch"/>
+
+    
+</launch>
+     

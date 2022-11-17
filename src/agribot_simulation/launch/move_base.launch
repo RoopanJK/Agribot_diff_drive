@@ -1,0 +1,14 @@
+<launch>
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <!-- local planner -->   
+    <param name="base_global_planner" value="navfn/NavfnROS"/>
+    <param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />     
+    <!-- params for costmap layers --> 
+    <rosparam file="$(find agribot_simulation)/config/movebase/local_costmap_params.yaml" command="load"/>
+    <rosparam file="$(find agribot_simulation)/config/movebase/global_costmap_params.yaml" command="load"/>
+    <rosparam file="$(find agribot_simulation)/config/movebase/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find agribot_simulation)/config/movebase/base_local_planner_params.yaml" command="load" />
+    <rosparam file="$(find agribot_simulation)/config/movebase/global_planner_params.yaml" command="load" />
+    <rosparam file="$(find agribot_simulation)/config/movebase/move_base_params.yaml" command="load" />
+  </node>
+</launch>

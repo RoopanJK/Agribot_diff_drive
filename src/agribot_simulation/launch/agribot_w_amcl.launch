@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+    <!-- Gmapping pacakge for mapping  -->
+
+    <!-- <node name="gmapping" pkg="gmapping" type="slam_gmapping" output="screen">
+      <remap from="scan" to="/scan" />
+      <rosparam file="$(find agribot_simulation)/config/gmapping.yaml" command="load" />
+    </node> -->
+
+    <!-- Map Server -->
+    <node pkg="map_server" name="map_server" type="map_server" args="'$(find agribot_simulation)/maps/room.yaml'" />
+
+    <!-- AMCL node -->
+    <node pkg="amcl" type="amcl" name="amcl" output="screen" args="scan:=/scan">
+        <rosparam file="$(find agribot_simulation)/config/amcl.yaml" command="load" />
+    </node>
+
+    <!-- Launch Rviz and config file -->
+    <node type="rviz" name="rviz" pkg="rviz" args="-d $(find agribot_simulation)/config/agb_movebase.rviz"/>
+</launch>
+     
