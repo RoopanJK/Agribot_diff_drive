@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 
 import rospy
-import roslib
 from geometry_msgs.msg import Twist
 
 from pyModbusTCP.client import ModbusClient
