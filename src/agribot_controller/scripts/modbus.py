@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-
+import math
 import rospy
 from geometry_msgs.msg import Twist
 
@@ -37,8 +37,12 @@ class modbus:
                 # break
         self.left_rpm = ((self.vel_x - (self.vel_z * wheel_bias / 2.0)) / wheel_radius) * 60 / (2*3.14159)
         self.right_rpm = -((self.vel_x + (self.vel_z * wheel_bias / 2.0)) / wheel_radius) * 60 / (2*3.14159)
+        self.left_rpm = round(self.left_rpm, 2)
+        self.right_rpm = round(self.right_rpm, 2)
         print("Vel_x = {}, Vel_z = {}".format(self.vel_x, self.vel_z))
         print("LEFT RPM = {}, RIGHT RPM = {}".format(self.left_rpm, self.right_rpm))
+        self.left_rpm = self.left_rpm * 100
+        self.right_rpm = self.right_rpm * 100
 
         if self.left_rpm == 0 and self.right_rpm == 0:
             plc.write_single_register(2, 0)
