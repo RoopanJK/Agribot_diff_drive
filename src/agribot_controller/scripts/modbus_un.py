@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 from pyModbusTCP.client import ModbusClient
 
 c = ModbusClient(host="192.168.1.5",port=502,auto_open=True)
