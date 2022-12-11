@@ -29,7 +29,7 @@ class modbus:
         self.vel_x = msg.linear.x
         self.vel_z = msg.angular.z
         self.left_rpm = ((self.vel_x - (self.vel_z * wheel_bias / 2.0)) / wheel_radius) * 60 / (2*3.14159)
-        self.right_rpm = ((self.vel_x + (self.vel_z * wheel_bias / 2.0)) / wheel_radius) * 60 / (2*3.14159)
+        self.right_rpm = - ((self.vel_x + (self.vel_z * wheel_bias / 2.0)) / wheel_radius) * 60 / (2*3.14159)
         self.left_rpm = round(self.left_rpm, 2)
         self.right_rpm = round(self.right_rpm, 2)
         print("Vel_x = {}, Vel_z = {}".format(self.vel_x, self.vel_z))
@@ -50,9 +50,9 @@ class modbus:
             plc.write_single_register(0, 0)
 
         if self.right_rpm < 0:
-            plc.write_single_register(1, 0)
-        else:
             plc.write_single_register(1, 1)
+        else:
+            plc.write_single_register(1, 0)
 
         plc.write_single_register(3, abs(self.left_rpm))
 
